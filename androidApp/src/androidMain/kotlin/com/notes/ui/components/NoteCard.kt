@@ -105,15 +105,28 @@ fun NoteCard(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if (note.tags.isNotEmpty()) {
+            if (note.tags.isNotEmpty() || true) { // Always show date
                 Spacer(Modifier.height(12.dp))
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    note.tags.forEach { tag ->
-                        TagChip(tag = tag)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        note.tags.forEach { tag ->
+                            TagChip(tag = tag)
+                        }
                     }
+                    
+                    Text(
+                        text = com.notes.domain.util.DateTimeUtil.formatNoteDate(note.createdAt),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = Oswald,
+                        color = PrussianBlue.copy(alpha = 0.5f)
+                    )
                 }
             }
         }

@@ -10,6 +10,12 @@ LakeNote is a modern, feature-rich Kotlin Multiplatform (KMP) note-taking and ta
 - **Dynamic Theming**: Premium design with full Dark/Light mode support, featuring a sleek Prussian Blue palette.
 - **Priority System**: Organize your work with Urgent, High, Medium, and Low priority levels.
 - **Clean Architecture**: Decoupled layers (Data, Domain, Presentation) for maximum code reuse and reliability.
+ 
+## 📱 Screenshots
+ 
+| Home Screen | Note Detail |
+|:---:|:---:|
+| ![Home](app_screenshot/note_home.png) | ![Selected Note](app_screenshot/selected_note.png) |
 
 ## 🏗️ Architecture
 

@@ -38,13 +38,14 @@ class NoteDetailViewModel(
     private val _priority = MutableStateFlow(Priority.MEDIUM)
     private val _category = MutableStateFlow(Category.GENERAL)
     private val _tags = MutableStateFlow<List<String>>(emptyList())
+    private val _createdAt = MutableStateFlow<kotlinx.datetime.Instant?>(null)
     private val _isSaving = MutableStateFlow(false)
 
     private val _events = MutableSharedFlow<NoteDetailEvent>()
     val events: SharedFlow<NoteDetailEvent> = _events.asSharedFlow()
 
     val uiState: StateFlow<NoteDetailState> = combine(
-        _title, _content, _priority, _category, _tags, _isSaving
+        _title, _content, _priority, _category, _tags, _createdAt, _isSaving
     ) { values ->
         // Destructure from the array combine emits for 6+ flows
         @Suppress("UNCHECKED_CAST")
@@ -53,7 +54,8 @@ class NoteDetailViewModel(
         val priority = values[2] as Priority
         val category = values[3] as Category
         val tags = values[4] as List<String>
-        val isSaving = values[5] as Boolean
+        val createdAt = values[5] as kotlinx.datetime.Instant?
+        val isSaving = values[6] as Boolean
 
         NoteDetailState(
             noteId = noteId,
@@ -62,6 +64,7 @@ class NoteDetailViewModel(
             priority = priority,
             category = category,
             tags = tags,
+            createdAt = createdAt,
             isSaving = isSaving,
             isEditMode = noteId != null,
             isValid = title.isNotBlank() && title.length <= Note.MAX_TITLE_LENGTH,
@@ -90,6 +93,7 @@ class NoteDetailViewModel(
             _priority.value = note.priority
             _category.value = note.category
             _tags.value = note.tags
+            _createdAt.value = note.createdAt
         } ?: _events.emit(NoteDetailEvent.ShowError("Note not found"))
     }
 
@@ -141,6 +145,7 @@ data class NoteDetailState(
     val priority: Priority = Priority.MEDIUM,
     val category: Category = Category.GENERAL,
     val tags: List<String> = emptyList(),
+    val createdAt: kotlinx.datetime.Instant? = null,
     val isSaving: Boolean = false,
     val isEditMode: Boolean = false,
     val isValid: Boolean = false,
