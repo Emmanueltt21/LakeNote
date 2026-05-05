@@ -278,7 +278,7 @@ private fun NoteListTopBar(
                     Icon(Icons.Default.Search, contentDescription = "Search", tint = SandyBrown)
                 }
                 IconButton(onClick = onSortToggle) {
-                    Icon(Icons.Default.Menu, contentDescription = "Sort", tint = SandyBrown)
+                    Icon(Icons.Default.FilterList, contentDescription = "Sort", tint = SandyBrown)
                 }
             }
         },

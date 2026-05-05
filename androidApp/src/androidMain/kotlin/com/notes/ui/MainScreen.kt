@@ -252,12 +252,15 @@ private fun AppBottomNavigation(navController: NavController) {
     NavigationBar(
         containerColor = PrussianBlue,
         tonalElevation = 0.dp,
-        modifier = Modifier.height(80.dp)
+        windowInsets = NavigationBarDefaults.windowInsets.exclude(WindowInsets.navigationBars),
+        modifier = Modifier
+            .height(100.dp)
+            .padding(bottom = 12.dp) // Extra room for the bottom
     ) {
         val items = listOf(
-            Triple("notes", "NOTES", Icons.Default.Menu),
-            Triple("tasks", "TASKS", Icons.Default.CheckCircle),
-            Triple("archive", "ARCHIVE", Icons.Default.Settings), // Using placeholder icon
+            Triple("notes", "NOTES", Icons.Default.EditNote),
+            Triple("tasks", "TASKS", Icons.Default.Checklist),
+            Triple("archive", "ARCHIVE", Icons.Default.Archive),
             Triple("settings", "SETTINGS", Icons.Default.Settings)
         )
 
@@ -274,8 +277,19 @@ private fun AppBottomNavigation(navController: NavController) {
                         restoreState = true
                     }
                 },
-                icon = { Icon(icon, contentDescription = title) },
-                label = { Text(title, fontFamily = Oswald, fontSize = 10.sp) },
+                icon = { 
+                    Box(modifier = Modifier.padding(top = 8.dp)) {
+                        Icon(icon, contentDescription = title) 
+                    }
+                },
+                label = { 
+                    Text(
+                        title, 
+                        fontFamily = Oswald, 
+                        fontSize = 11.sp,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) 
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = SandyBrown,
                     selectedTextColor = SandyBrown,

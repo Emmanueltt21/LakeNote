@@ -58,28 +58,47 @@ class NoteListViewModel(
      * flatMapLatest() in the search branch cancels the previous query
      * when a new search term arrives.
      */
+    // --- Derived data flows ---
+
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val uiState: StateFlow<NoteListState> = combine(
+    private val _notesFlow = combine(
         _searchQuery.debounce(300),
+        _sort
+    ) { query, sort ->
+        query to sort
+    }.flatMapLatest { (query, sort) ->
+        if (query.isBlank()) {
+            getNotesUseCase(sort)
+        } else {
+            searchNotesUseCase(query)
+        }
+    }.catch { 
+        // Handle repository errors by emitting an empty list or specific error state
+        emit(emptyList())
+    }
+
+    /**
+     * UI state as a single StateFlow — the UI observes exactly one source of truth.
+     *
+     * We combine the immediate UI states (_searchQuery, _selectedIds, etc.)
+     * with the async data flow (_notesFlow) to ensure the UI remains responsive
+     * while data loads in the background.
+     */
+    val uiState: StateFlow<NoteListState> = combine(
+        _searchQuery,
         _sort,
         _selectedIds,
         _isSearchActive,
-    ) { query, sort, selectedIds, isSearchActive ->
-        Triple(query, sort, Pair(selectedIds, isSearchActive))
-    }
-    .flatMapLatest { (query, sort, rest) ->
-        val (selectedIds, isSearchActive) = rest
-        val notesFlow = if (query.isBlank()) getNotesUseCase(sort) else searchNotesUseCase(query)
-        notesFlow.map { notes ->
-            NoteListState.Success(
-                notes = notes,
-                query = query,
-                sort = sort,
-                selectedIds = selectedIds,
-                isSearchActive = isSearchActive,
-                isSelectionMode = selectedIds.isNotEmpty(),
-            ) as NoteListState
-        }
+        _notesFlow
+    ) { query, sort, selectedIds, isSearchActive, notes ->
+        NoteListState.Success(
+            notes = notes,
+            query = query,
+            sort = sort,
+            selectedIds = selectedIds,
+            isSearchActive = isSearchActive,
+            isSelectionMode = selectedIds.isNotEmpty(),
+        ) as NoteListState
     }
     .catch { emit(NoteListState.Error(it.message ?: "Unknown error")) }
     .stateIn(

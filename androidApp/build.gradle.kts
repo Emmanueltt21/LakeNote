@@ -21,6 +21,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.foundation)
             implementation(libs.compose.navigation)
+            implementation(libs.compose.icons.extended)
             implementation(libs.koin.android)
             implementation(libs.koin.compose)
             implementation(libs.koin.androidx.compose)
