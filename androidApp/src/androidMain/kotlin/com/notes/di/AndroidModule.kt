@@ -4,6 +4,7 @@ import android.content.Context
 import com.notes.data.local.DatabaseFactory
 import com.notes.presentation.notedetail.NoteDetailViewModel
 import com.notes.presentation.notelist.NoteListViewModel
+import com.notes.ui.theme.ThemeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
@@ -25,4 +26,5 @@ val androidModule = module {
     single<DatabaseFactory> { DatabaseFactory(androidContext()) }
     viewModelOf(::NoteListViewModel)
     viewModelOf(::NoteDetailViewModel)
+    viewModelOf(::ThemeViewModel)
 }

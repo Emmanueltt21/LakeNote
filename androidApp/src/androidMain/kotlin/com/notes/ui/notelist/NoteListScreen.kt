@@ -34,6 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 fun NoteListScreen(
     onNavigateToCreate: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
+    onOpenDrawer: () -> Unit,
     viewModel: NoteListViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -65,11 +66,9 @@ fun NoteListScreen(
                 onSortToggle = { showFilterSheet = true },
                 onClearSelection = viewModel::onClearSelection,
                 onArchiveSelected = viewModel::onArchiveSelected,
-                onDeleteSelected = viewModel::onDeleteSelected
+                onDeleteSelected = viewModel::onDeleteSelected,
+                onOpenDrawer = onOpenDrawer
             )
-        },
-        bottomBar = {
-            NoteListBottomBar()
         },
         floatingActionButton = {
             if ((state as? NoteListState.Success)?.isSelectionMode != true) {
@@ -212,7 +211,8 @@ private fun NoteListTopBar(
     onSortToggle: () -> Unit,
     onClearSelection: () -> Unit,
     onArchiveSelected: () -> Unit,
-    onDeleteSelected: () -> Unit
+    onDeleteSelected: () -> Unit,
+    onOpenDrawer: () -> Unit
 ) {
     val successState = state as? NoteListState.Success
     val isSearchActive = successState?.isSearchActive == true
@@ -260,7 +260,7 @@ private fun NoteListTopBar(
                     Icon(Icons.Default.Close, contentDescription = "Cancel", tint = VanillaCustard)
                 }
             } else {
-                IconButton(onClick = {}) {
+                IconButton(onClick = onOpenDrawer) {
                     Icon(Icons.Default.Menu, contentDescription = "Menu", tint = VanillaCustard)
                 }
             }
@@ -288,62 +288,7 @@ private fun NoteListTopBar(
     )
 }
 
-@Composable
-private fun NoteListBottomBar() {
-    NavigationBar(
-        containerColor = PrussianBlue,
-        tonalElevation = 0.dp,
-        modifier = Modifier.height(80.dp)
-    ) {
-        NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = { Icon(Icons.Default.Menu, contentDescription = "Notes") },
-            label = { Text("NOTES", fontFamily = Oswald, fontSize = 10.sp) },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = SandyBrown,
-                selectedTextColor = SandyBrown,
-                unselectedIconColor = VanillaCustard.copy(alpha = 0.4f),
-                unselectedTextColor = VanillaCustard.copy(alpha = 0.4f),
-                indicatorColor = Color.Transparent
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.CheckCircle, contentDescription = "Tasks") },
-            label = { Text("TASKS", fontFamily = Oswald, fontSize = 10.sp) },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = VanillaCustard.copy(alpha = 0.4f),
-                unselectedTextColor = VanillaCustard.copy(alpha = 0.4f),
-                indicatorColor = Color.Transparent
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.Settings, contentDescription = "Archive") },
-            label = { Text("ARCHIVE", fontFamily = Oswald, fontSize = 10.sp) },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = VanillaCustard.copy(alpha = 0.4f),
-                unselectedTextColor = VanillaCustard.copy(alpha = 0.4f),
-                indicatorColor = Color.Transparent
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.Settings, contentDescription = "Settings") },
-            label = { Text("SETTINGS", fontFamily = Oswald, fontSize = 10.sp) },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = VanillaCustard.copy(alpha = 0.4f),
-                unselectedTextColor = VanillaCustard.copy(alpha = 0.4f),
-                indicatorColor = Color.Transparent
-            )
-        )
-    }
-}
-
+// Removed NoteListBottomBar as it is now in MainScreen
 @Composable
 private fun LoadingContent() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
