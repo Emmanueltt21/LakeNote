@@ -6,13 +6,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Note: To use Oswald, download ttf files and add to res/font/
-// Then define:
-// val Oswald = FontFamily(
-//     Font(R.font.oswald_regular, FontWeight.Normal),
-//     Font(R.font.oswald_bold, FontWeight.Bold)
-// )
-val Oswald = FontFamily.Default // Placeholder
+import com.notes.R
+
+val Oswald = FontFamily(
+    androidx.compose.ui.text.font.Font(R.font.oswald_regular, FontWeight.Normal),
+    androidx.compose.ui.text.font.Font(R.font.oswald_bold, FontWeight.Bold)
+)
 
 val Typography = Typography(
     displayLarge = TextStyle(

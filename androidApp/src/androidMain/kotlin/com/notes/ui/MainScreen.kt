@@ -51,21 +51,88 @@ fun MainScreen(
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet(
-                    drawerContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    drawerContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    drawerContainerColor = MaterialTheme.colorScheme.surface,
+                    drawerContentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.width(300.dp)
                 ) {
-                    Spacer(Modifier.height(16.dp))
+                    // Drawer Header
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .background(PrussianBlue)
+                            .padding(16.dp),
+                        contentAlignment = Alignment.BottomStart
+                    ) {
+                        Column {
+                            Surface(
+                                shape = androidx.compose.foundation.shape.CircleShape,
+                                color = SandyBrown,
+                                modifier = Modifier.size(64.dp)
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    Text(
+                                        "LN",
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        color = PrussianBlue
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                text = "LakeNote Pro",
+                                style = MaterialTheme.typography.titleLarge,
+                                color = VanillaCustard
+                            )
+                            Text(
+                                text = "Premium Note Taking",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = VanillaCustard.copy(alpha = 0.7f)
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(12.dp))
+                    
+                    // Main Section
                     Text(
-                        text = "NOTES APP",
-                        modifier = Modifier.padding(16.dp),
-                        fontFamily = Oswald,
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.primary
+                        "LIBRARY",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp)
                     )
-                    Divider()
+                    DrawerItem(
+                        icon = Icons.Default.Delete,
+                        label = "Recently Deleted",
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            navController.navigate("deleted")
+                        }
+                    )
+                    DrawerItem(
+                        icon = Icons.Default.List,
+                        label = "Tags & Labels",
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            navController.navigate("tags")
+                        }
+                    )
+
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    )
+
+                    // Feedback & Support
+                    Text(
+                        "FEEDBACK",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp)
+                    )
                     DrawerItem(
                         icon = Icons.Default.Share,
-                        label = "Share App",
+                        label = "Share with Friends",
                         onClick = {
                             scope.launch { drawerState.close() }
                             navController.navigate("share")
@@ -73,20 +140,27 @@ fun MainScreen(
                     )
                     DrawerItem(
                         icon = Icons.Default.Star,
-                        label = "Review",
+                        label = "Rate on Play Store",
                         onClick = {
                             scope.launch { drawerState.close() }
                             navController.navigate("review")
                         }
                     )
                     DrawerItem(
-                        icon = Icons.Default.Info,
-                        label = "About Us",
+                        icon = Icons.Default.Email,
+                        label = "Contact Support",
                         onClick = {
                             scope.launch { drawerState.close() }
                             navController.navigate("about")
                         }
                     )
+
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    )
+
+                    // Legal
                     DrawerItem(
                         icon = Icons.Default.Lock,
                         label = "Privacy Policy",
